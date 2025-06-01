@@ -52,7 +52,7 @@ const MessageSection: React.FC = () => {
               </div>
             </div>
 
-            <div className="font-gowundodum text-secondary/90 text-lg md:text-xl italic mt-4">
+            <div className="font-gowundodum text-secondary/90 mb-16 text-lg md:text-xl italic mt-4">
               <p>저희 두 사람의 뜻에 따라</p>
               <p>양가 가족만 모시고</p>
               <p className="mb-6">간소하게 식을 올리게 되었습니다.</p>
