@@ -29,7 +29,7 @@ const CoupleSection: React.FC = () => {
   return (
       <section
           ref={sectionRef}
-          className="relative max-w-[900px] mx-auto aspect-[9/16] opacity-0 bg-cover bg-center bg-fixed"
+          className="relative max-w-[900px] mx-auto aspect-[9/17] opacity-0 bg-cover bg-center bg-fixed"
           style={{
             backgroundImage:
                 "url('https://serandev.github.io/serena-invitation/20250424_SR_SJ_0.jpg')",
