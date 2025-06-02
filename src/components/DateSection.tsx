@@ -44,8 +44,8 @@ const DateSection: React.FC = () => {
                 <Calendar className="w-8 h-8 text-accent" />
               </div>
               {/* <h3 className="font-himelody text-xl text-primary mb-2">일정</h3> */}
-              <p className="text-secondary text-lg">2025년 9월 20일</p>
-              <p className="text-secondary/80 text-sm">토요일</p>
+              <p className="text-secondary/80 text-lg">2025년 9월 20일</p>
+              <p className="text-secondary/80 text-m">토요일 낮 12시</p>
             </div>
           </div>
         </div>
