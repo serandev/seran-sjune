@@ -3,9 +3,29 @@ import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 
 const photos = [
   {
+    id: 7,
+    src: 'https://serandev.github.io/serena-invitation/20250424_SR_SJ_0.jpg',
+    alt: 'Couple holding hands',
+  },
+  {
     id: 1,
     src: 'https://serandev.github.io/serena-invitation/20250424_SR_SJ_1.jpg',
-    alt: 'Couple at sunset',
+    alt: 'Couple at Forest',
+  },
+  // {
+  //   id: 3,
+  //   src: 'https://serandev.github.io/serena-invitation/20250424_SR_SJ_3.jpg',
+  //   alt: 'Couple laughing',
+  // },
+  {
+    id: 5,
+    src: 'https://serandev.github.io/serena-invitation/20250424_SR_SJ_5.jpg',
+    alt: 'Couple at Beach',
+  },
+  {
+    id: 6,
+    src: 'https://serandev.github.io/serena-invitation/20250424_SR_SJ_6.jpg',
+    alt: 'Couple silhouette',
   },
   {
     id: 2,
@@ -13,25 +33,20 @@ const photos = [
     alt: 'Couple holding hands',
   },
   {
-    id: 3,
-    src: 'https://serandev.github.io/serena-invitation/20250424_SR_SJ_3.jpg',
-    alt: 'Couple laughing',
-  },
-  {
     id: 4,
     src: 'https://serandev.github.io/serena-invitation/20250424_SR_SJ_4.jpg',
-    alt: 'Couple walking on beach',
+    alt: 'Couple sitting on bench',
   },
-  {
-    id: 5,
-    src: 'https://serandev.github.io/serena-invitation/20250424_SR_SJ_5.jpg',
-    alt: 'Couple embracing',
-  },
-  {
-    id: 6,
-    src: 'https://serandev.github.io/serena-invitation/20250424_SR_SJ_6.jpg',
-    alt: 'Couple silhouette',
-  },
+  // {
+  //   id: 8,
+  //   src: 'https://serandev.github.io/serena-invitation/20250424_SR_SJ_7.jpg',
+  //   alt: '',
+  // },
+  // {
+  //   id: 9,
+  //   src: 'https://serandev.github.io/serena-invitation/20250424_SR_SJ_8.jpg',
+  //   alt: '',
+  // }
 ];
 
 const GallerySection: React.FC = () => {
@@ -97,10 +112,10 @@ const GallerySection: React.FC = () => {
 
   return (
     <>
-      <section ref={sectionRef} className="py-10 bg-primary/5 opacity-0">
+      <section ref={sectionRef} className="py-10 pb-40 bg-primary/5 opacity-0">
         <div className="container mx-auto px-4">
           <div className="max-w-5xl mx-auto text-center">
-            <h2 className="font-himelody text-3xl md:text-4xl text-primary mb-12">
+            <h2 className="font-orbit text-3xl md:text-4xl text-primary mb-12">
               우리의 사진들
             </h2>
 

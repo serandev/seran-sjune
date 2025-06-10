@@ -75,7 +75,7 @@ const MoneySection: React.FC = () => {
                 </h2>
             </div>
 
-            <div className="max-w-2xl font-gowunbatang mx-auto flex flex-col gap-6">
+            <div className="max-w-2xl font-gowundodum mx-auto flex flex-col gap-6">
                 <CollapsibleBox
                     title="신랑측"
                     isOpen={showGroom}

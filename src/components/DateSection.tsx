@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { Calendar, Clock } from 'lucide-react';
+import { Calendar } from 'lucide-react';
 
 const DateSection: React.FC = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -32,7 +32,7 @@ const DateSection: React.FC = () => {
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto text-center">
           {/* <h2 className="font-himelody text-3xl md:text-4xl text-primary mb-12"> */}
-          <h2 className="font-himelody text-3xl md:text-4xl text-primary mb-12 text-center">
+          <h2 className="font-orbit text-3xl md:text-4xl text-primary mb-12 text-center">
             날짜
           </h2>
 
@@ -44,8 +44,8 @@ const DateSection: React.FC = () => {
                 <Calendar className="w-8 h-8 text-accent" />
               </div>
               {/* <h3 className="font-himelody text-xl text-primary mb-2">일정</h3> */}
-              <p className="text-secondary text-lg">2025년 9월 20일</p>
-              <p className="text-secondary/80 text-sm">토요일</p>
+              <p className="text-secondary/80 text-xl font-orbit">2025년 9월 20일</p>
+              <p className="text-secondary/80 text-lg font-orbit">토요일 낮 12시</p>
             </div>
           </div>
         </div>
