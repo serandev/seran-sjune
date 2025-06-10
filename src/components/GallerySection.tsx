@@ -112,7 +112,7 @@ const GallerySection: React.FC = () => {
 
   return (
     <>
-      <section ref={sectionRef} className="py-10 pb-40 bg-primary/5 opacity-0">
+      <section ref={sectionRef} className="py-10 pb-10 bg-primary/5 opacity-0">
         <div className="container mx-auto px-4">
           <div className="max-w-5xl mx-auto text-center">
             <h2 className="font-orbit text-3xl md:text-4xl text-primary mb-12">
