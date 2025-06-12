@@ -10,6 +10,7 @@ import {
     onSnapshot
 } from 'firebase/firestore';
 import { db } from '../lib/firebase';
+import emailjs from '@emailjs/browser';
 
 export interface User {
     id?: string;
@@ -36,20 +37,81 @@ export interface MessageWithUser {
     };
 }
 
-// 메시지 추가 (IP는 클라이언트에서 'unknown'으로 설정)
+// 1. EmailJS 설치 필요
+// npm install @emailjs/browser
+
+
+// EmailJS 초기화 (환경변수로 관리 권장)
+const EMAILJS_SERVICE_ID = 'serandev';
+const EMAILJS_TEMPLATE_ID = 'template_n1ljggs';
+const EMAILJS_PUBLIC_KEY = 'ka2sSAy8mlzQd8IuG';
+
+// 이메일 알림 발송 함수
+const sendEmailNotification = async (messageData: {
+    userNickname: string;
+    userId: string;
+    content: string;
+    messageId: string;
+}) => {
+    try {
+        const templateParams = {
+            title: '세란 선준 웨딩 알림',
+            name: messageData.userNickname,
+            message: messageData.content,
+            site_url: window.location.origin
+        };
+
+        await emailjs.send(
+            EMAILJS_SERVICE_ID,
+            EMAILJS_TEMPLATE_ID,
+            templateParams,
+            EMAILJS_PUBLIC_KEY
+        );
+    } catch (error) {
+        console.error('이메일 발송 실패:', error);
+    }
+};
+
+// 메시지 추가 (이메일 알림 포함)
 export const addMessage = async (messageData: {
+    userNickname: string;
     userId: string;
     content: string;
 }): Promise<string> => {
     try {
+        // 1. Firestore에 메시지 저장
         const docRef = await addDoc(collection(db, 'messages'), {
             ...messageData,
-            ipAddress: 'unknown', // 클라이언트에서는 IP 추적 안함
+            ipAddress: 'unknown',
             createdAt: Timestamp.now()
         });
+
+        console.log('메시지 저장 성공:', docRef.id);
+
+        // 2. 이메일 알림 발송 (비동기로 실행, 실패해도 메시지 저장에 영향 없음)
+        sendEmailNotification({
+            ...messageData,
+            messageId: docRef.id
+        }).catch(error => {
+            console.error('이메일 알림 발송 중 오류:', error);
+        });
+
         return docRef.id;
     } catch (error) {
         console.error('Error adding message:', error);
+        throw error;
+    }
+};
+
+// 사용 예시
+export const handleMessageSubmit = async (userNickname: string, userId: string, content: string) => {
+    try {
+        const messageId = await addMessage({ userNickname, userId, content });
+        console.log('메시지가 성공적으로 저장되었습니다:', messageId);
+        // 이메일은 백그라운드에서 발송됨
+        return messageId;
+    } catch (error) {
+        console.error('메시지 저장 실패:', error);
         throw error;
     }
 };

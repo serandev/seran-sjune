@@ -12,6 +12,7 @@
     "deploy": "netlify deploy --prod"
   },
   "dependencies": {
+    "@emailjs/browser": "^4.4.1",
     "@netlify/functions": "^4.1.5",
     "firebase": "^11.9.1",
     "lucide-react": "^0.344.0",

@@ -77,6 +77,7 @@ const Comment: React.FC = () => {
         setSubmitting(true);
         try {
             await addMessage({
+                userNickname: user.nickname,
                 userId: user.id!,
                 content: newMessage.trim()
             });
