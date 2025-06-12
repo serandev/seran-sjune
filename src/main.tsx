@@ -3,7 +3,6 @@ import { createRoot } from 'react-dom/client';
 import App from './App.tsx';
 import './index.css';
 
-// 카카오 SDK 초기화
 declare global {
     interface Window {
         Kakao: any;
