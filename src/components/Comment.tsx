@@ -118,9 +118,6 @@ const Comment: React.FC = () => {
                         onClick={handleKakaoLogin}
                         className="bg-yellow-400 hover:bg-yellow-500 text-black font-semibold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center gap-2 mx-auto"
                     >
-                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                            <path d="M10 0C4.486 0 0 3.582 0 8c0 2.84 1.88 5.344 4.68 6.736-.2-.88-.368-2.236.08-3.2.4-.876 2.596-11.004 2.596-11.004s-.664 1.344-.664 3.328c0 1.568.908 2.736 2.04 2.736.964 0 1.428-.724 1.428-1.592 0-1.412-.9-3.528-.9-3.528 1.008-.42 2.052.168 2.052 1.572 0 1.836-1.564 4.44-1.564 4.44.912.084 1.836-.336 2.572-1.156C18.32 5.92 20 7.76 20 8c0 4.418-4.486 8-10 8z" fill="currentColor"/>
-                        </svg>
                         카카오톡으로 로그인
                     </button>
                     <p className="text-sm text-gray-500 mt-2">
