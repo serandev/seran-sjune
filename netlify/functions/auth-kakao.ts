@@ -2,7 +2,6 @@ import { Handler, HandlerEvent, HandlerContext } from '@netlify/functions';
 import { initializeApp } from 'firebase/app';
 import {
     getFirestore,
-    collection,
     doc,
     getDoc,
     setDoc
