@@ -3,7 +3,7 @@ import { User } from '../types/api';
 // Vite에서 개발/프로덕션 환경 구분
 const API_BASE_URL = import.meta.env.MODE === 'development'
     ? 'http://localhost:8888/.netlify/functions'
-    : '/api';
+    : '/.netlify/functions';  // /api 대신 직접 경로 사용
 
 console.log('Current mode:', import.meta.env.MODE);
 console.log('API_BASE_URL:', API_BASE_URL);
