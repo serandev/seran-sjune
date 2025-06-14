@@ -3,10 +3,10 @@ import CoupleSection from '../components/CoupleSection';
 import DateSection from '../components/DateSection';
 import GallerySection from '../components/GallerySection';
 import LocationSection from '../components/LocationSection';
-import MessageSection from '../components/MessageSection';
+import NotificationSection from '../components/NotificationSection.tsx';
 import CountdownSection from '../components/CountdownSection';
 import InvitationHeader from '../components/InvitationHeader';
-import Comment from '../components/Comment';
+import MessageSection from '../components/MessageSection.tsx';
 
 const InvitationPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -36,12 +36,12 @@ const InvitationPage: React.FC = () => {
       <InvitationHeader />
       <main>
         <CoupleSection />
-        <MessageSection />
+        <NotificationSection />
         <DateSection />
         <CountdownSection weddingDate="2025-09-20T12:00:00" />
         <LocationSection />
         <GallerySection />
-        <Comment />
+        <MessageSection />
         <div className="pt-40" />
       </main>
       {/* <InvitationFooter /> */}
