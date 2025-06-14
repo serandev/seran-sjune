@@ -286,14 +286,8 @@ const MessageSection: React.FC = () => {
                                 alt={user.nickname}
                                 className="w-10 h-10 rounded-full"
                             />
-                            <span className="font-medium">{user.nickname}님으로 로그인됨</span>
+                            <span className="font-medium">{user.nickname}</span>
                         </div>
-                        <button
-                            onClick={handleLogout}
-                            className="text-sm text-gray-500 hover:text-gray-700 transition-colors duration-200"
-                        >
-                            로그아웃
-                        </button>
                     </div>
                 )}
 
@@ -317,7 +311,7 @@ const MessageSection: React.FC = () => {
                                 disabled={submitting || !newMessage.trim() || remainingTime > 0}
                                 className="bg-primary hover:bg-primary-dark text-white font-medium py-2 px-6 rounded-lg transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                             >
-                                {submitting ? '전송 중...' : '메시지 전송'}
+                                {submitting ? '작성 중...' : '작성하기'}
                             </button>
                         </div>
                     </form>
