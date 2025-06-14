@@ -58,3 +58,24 @@
     }
   }
 }
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.animate-slideIn {
+  animation: slideIn 0.3s ease-out;
+}
+
+/* 호버 효과 개선 */
+.alert-close-btn:hover {
+  transform: scale(1.1);
+  transition: transform 0.2s ease;
+}

@@ -10,13 +10,8 @@ import {
     onSnapshot
 } from 'firebase/firestore';
 import { db } from '../lib/firebase';
-import emailjs from '@emailjs/browser';
-
-export interface User {
-    id?: string;
-    nickname: string;
-    profileImageUrl: string;
-}
+import { User } from '../types/api';
+import { emailService } from './emailService';
 
 export interface Message {
     id?: string;
@@ -37,59 +32,81 @@ export interface MessageWithUser {
     };
 }
 
-// 1. EmailJS 설치 필요
-// npm install @emailjs/browser
-
-
-// EmailJS 초기화 (환경변수로 관리 권장)
-const EMAILJS_SERVICE_ID = 'serandev';
-const EMAILJS_TEMPLATE_ID = 'template_n1ljggs';
-const EMAILJS_PUBLIC_KEY = 'ka2sSAy8mlzQd8IuG';
-
-// 이메일 알림 발송 함수
-const sendEmailNotification = async (messageData: {
+export interface CreateMessageData {
     userNickname: string;
     userId: string;
     content: string;
-    messageId: string;
-}) => {
-    try {
-        const templateParams = {
-            title: '세란 선준 웨딩 알림',
-            name: messageData.userNickname,
-            message: messageData.content,
-            site_url: window.location.origin
-        };
+}
 
-        await emailjs.send(
-            EMAILJS_SERVICE_ID,
-            EMAILJS_TEMPLATE_ID,
-            templateParams,
-            EMAILJS_PUBLIC_KEY
-        );
+// 기본 사용자 정보 (사용자를 찾을 수 없을 때 사용)
+const DEFAULT_USER = {
+    nickname: '알 수 없는 사용자',
+    profileImageUrl: 'https://via.placeholder.com/40?text=?'
+};
+
+/**
+ * 사용자 정보를 조회하는 함수
+ */
+const getUserById = async (userId: string): Promise<{ nickname: string; profileImageUrl: string }> => {
+    try {
+        console.log('Looking for user ID:', userId);
+
+        const userDocRef = doc(db, 'users', userId);
+        const userDoc = await getDoc(userDocRef);
+
+        console.log('userDoc exists:', userDoc.exists());
+
+        if (userDoc.exists()) {
+            const userData = userDoc.data() as User;
+            console.log('User data:', userData);
+
+            return {
+                nickname: userData.nickname,
+                profileImageUrl: userData.profileImageUrl
+            };
+        } else {
+            console.warn(`User document not found for userId: ${userId}`);
+            return DEFAULT_USER;
+        }
     } catch (error) {
-        console.error('이메일 발송 실패:', error);
+        console.error(`Error fetching user ${userId}:`, error);
+        return DEFAULT_USER;
     }
 };
 
-// 메시지 추가 (이메일 알림 포함)
-export const addMessage = async (messageData: {
-    userNickname: string;
-    userId: string;
-    content: string;
-}): Promise<string> => {
+/**
+ * 메시지 데이터를 MessageWithUser 형태로 변환하는 함수
+ */
+const convertToMessageWithUser = async (messageDoc: any): Promise<MessageWithUser> => {
+    const messageData = messageDoc.data() as Message;
+    const user = await getUserById(messageData.userId);
+
+    return {
+        id: messageDoc.id,
+        userId: messageData.userId,
+        content: messageData.content,
+        createdAt: messageData.createdAt,
+        user
+    };
+};
+
+/**
+ * 메시지 추가 (이메일 알림 포함)
+ */
+export const addMessage = async (messageData: CreateMessageData): Promise<string> => {
     try {
         // 1. Firestore에 메시지 저장
         const docRef = await addDoc(collection(db, 'messages'), {
-            ...messageData,
-            ipAddress: 'unknown',
+            userId: messageData.userId,
+            content: messageData.content,
+            ipAddress: 'unknown', // 필요시 실제 IP 주소 수집 로직 추가
             createdAt: Timestamp.now()
         });
 
         console.log('메시지 저장 성공:', docRef.id);
 
-        // 2. 이메일 알림 발송 (비동기로 실행, 실패해도 메시지 저장에 영향 없음)
-        sendEmailNotification({
+        // 2. 백그라운드에서 이메일 알림 발송
+        emailService.sendEmailNotification({
             ...messageData,
             messageId: docRef.id
         }).catch(error => {
@@ -103,20 +120,9 @@ export const addMessage = async (messageData: {
     }
 };
 
-// 사용 예시
-export const handleMessageSubmit = async (userNickname: string, userId: string, content: string) => {
-    try {
-        const messageId = await addMessage({ userNickname, userId, content });
-        console.log('메시지가 성공적으로 저장되었습니다:', messageId);
-        // 이메일은 백그라운드에서 발송됨
-        return messageId;
-    } catch (error) {
-        console.error('메시지 저장 실패:', error);
-        throw error;
-    }
-};
-
-// 메시지 목록 조회 (사용자 정보 포함)
+/**
+ * 메시지 목록 조회 (사용자 정보 포함)
+ */
 export const getMessages = async (): Promise<MessageWithUser[]> => {
     try {
         const q = query(
@@ -127,61 +133,10 @@ export const getMessages = async (): Promise<MessageWithUser[]> => {
 
         const messagesWithUsers: MessageWithUser[] = [];
 
-        // 각 메시지에 대해 사용자 정보 조회
+        // 각 메시지에 대해 사용자 정보 조회 (순차적으로 처리)
         for (const messageDoc of querySnapshot.docs) {
-            const messageData = messageDoc.data() as Message;
-
-            try {
-                console.log('Looking for user ID:', messageData.userId);
-
-                // 사용자 정보 조회
-                const userDocRef = doc(db, 'users', messageData.userId);
-                const userDoc = await getDoc(userDocRef);
-
-                console.log('userDoc exists:', userDoc.exists());
-
-                if (userDoc.exists()) {
-                    const userData = userDoc.data() as User;
-                    console.log('User data:', userData);
-
-                    messagesWithUsers.push({
-                        id: messageDoc.id,
-                        userId: messageData.userId,
-                        content: messageData.content,
-                        createdAt: messageData.createdAt,
-                        user: {
-                            nickname: userData.nickname,
-                            profileImageUrl: userData.profileImageUrl
-                        }
-                    });
-                } else {
-                    console.warn(`User document not found for userId: ${messageData.userId}`);
-                    // 사용자 정보가 없는 경우 기본값으로 메시지 표시
-                    messagesWithUsers.push({
-                        id: messageDoc.id,
-                        userId: messageData.userId,
-                        content: messageData.content,
-                        createdAt: messageData.createdAt,
-                        user: {
-                            nickname: '알 수 없는 사용자',
-                            profileImageUrl: 'https://via.placeholder.com/40?text=?'
-                        }
-                    });
-                }
-            } catch (userError) {
-                console.error(`Error fetching user ${messageData.userId}:`, userError);
-                // 에러 발생 시에도 기본값으로 메시지 표시
-                messagesWithUsers.push({
-                    id: messageDoc.id,
-                    userId: messageData.userId,
-                    content: messageData.content,
-                    createdAt: messageData.createdAt,
-                    user: {
-                        nickname: '알 수 없는 사용자',
-                        profileImageUrl: 'https://via.placeholder.com/40?text=?'
-                    }
-                });
-            }
+            const messageWithUser = await convertToMessageWithUser(messageDoc);
+            messagesWithUsers.push(messageWithUser);
         }
 
         return messagesWithUsers;
@@ -191,7 +146,9 @@ export const getMessages = async (): Promise<MessageWithUser[]> => {
     }
 };
 
-// 실시간으로 메시지 감시 (사용자 정보 포함)
+/**
+ * 실시간으로 메시지 감시 (사용자 정보 포함)
+ */
 export const subscribeToMessages = (callback: (messages: MessageWithUser[]) => void) => {
     const q = query(
         collection(db, 'messages'),
@@ -199,38 +156,25 @@ export const subscribeToMessages = (callback: (messages: MessageWithUser[]) => v
     );
 
     return onSnapshot(q, async (querySnapshot) => {
-        const messagesWithUsers: MessageWithUser[] = [];
+        try {
+            const messagesWithUsers: MessageWithUser[] = [];
 
-        // 각 메시지에 대해 사용자 정보 조회
-        for (const messageDoc of querySnapshot.docs) {
-            const messageData = messageDoc.data() as Message;
-
-            try {
-                // 사용자 정보 조회
-                const userDocRef = doc(db, 'users', messageData.userId);
-                const userDoc = await getDoc(userDocRef);
-
-                if (userDoc.exists()) {
-                    const userData = userDoc.data() as User;
-
-                    messagesWithUsers.push({
-                        id: messageDoc.id,
-                        userId: messageData.userId,
-                        content: messageData.content,
-                        createdAt: messageData.createdAt,
-                        user: {
-                            nickname: userData.nickname,
-                            profileImageUrl: userData.profileImageUrl
-                        }
-                    });
-                } else {
-                    console.warn(`User not found for userId: ${messageData.userId}`);
+            // 각 메시지에 대해 사용자 정보 조회 (순차적으로 처리)
+            for (const messageDoc of querySnapshot.docs) {
+                try {
+                    const messageWithUser = await convertToMessageWithUser(messageDoc);
+                    messagesWithUsers.push(messageWithUser);
+                } catch (userError) {
+                    console.error(`Error processing message ${messageDoc.id}:`, userError);
+                    // 에러가 발생한 메시지는 건너뛰고 계속 진행
                 }
-            } catch (userError) {
-                console.error(`Error fetching user data for ${messageData.userId}:`, userError);
             }
-        }
 
-        callback(messagesWithUsers);
+            callback(messagesWithUsers);
+        } catch (error) {
+            console.error('Error in message subscription:', error);
+            // 에러가 발생해도 빈 배열로 콜백 호출
+            callback([]);
+        }
     });
 };

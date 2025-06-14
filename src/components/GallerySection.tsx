@@ -3,12 +3,12 @@ import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 
 const photos = [
   {
-    id: 7,
+    id: 1,
     src: 'https://serandev.github.io/serena-invitation/20250424_SR_SJ_0.jpg',
     alt: 'Couple holding hands',
   },
   {
-    id: 1,
+    id: 2,
     src: 'https://serandev.github.io/serena-invitation/20250424_SR_SJ_1.jpg',
     alt: 'Couple at Forest',
   },
@@ -18,22 +18,22 @@ const photos = [
   //   alt: 'Couple laughing',
   // },
   {
-    id: 5,
+    id: 3,
     src: 'https://serandev.github.io/serena-invitation/20250424_SR_SJ_5.jpg',
     alt: 'Couple at Beach',
   },
   {
-    id: 6,
+    id: 4,
     src: 'https://serandev.github.io/serena-invitation/20250424_SR_SJ_6.jpg',
     alt: 'Couple silhouette',
   },
   {
-    id: 2,
+    id: 5,
     src: 'https://serandev.github.io/serena-invitation/20250424_SR_SJ_2.jpg',
     alt: 'Couple holding hands',
   },
   {
-    id: 4,
+    id: 6,
     src: 'https://serandev.github.io/serena-invitation/20250424_SR_SJ_4.jpg',
     alt: 'Couple sitting on bench',
   },
