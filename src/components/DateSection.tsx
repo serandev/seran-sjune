@@ -66,19 +66,19 @@ const DateSection: React.FC = () => {
     const isTodayMonth = year === todayYear && month === todayMonth;
 
     return (
-        <div className="bg-background rounded-xl shadow-lg p-6">
-          <div className="mb-4">
-            <h3 className="font-orbit text-xl text-primary mb-2">
+        <div className="bg-background rounded-lg shadow-md p-4 md:p-6">
+          <div className="mb-3 md:mb-4">
+            <h3 className="font-orbit text-lg md:text-xl text-primary mb-1 md:mb-2">
               {year}년 {monthNames[month]}
             </h3>
           </div>
 
           {/* 요일 헤더 */}
-          <div className="grid grid-cols-7 gap-1 mb-3">
+          <div className="grid grid-cols-7 gap-1 mb-2 md:mb-3">
             {weekDays.map((day, index) => (
                 <div
                     key={day}
-                    className={`w-10 h-10 flex items-center justify-center text-sm font-medium ${
+                    className={`w-8 h-8 md:w-10 md:h-10 flex items-center justify-center text-xs md:text-sm font-medium ${
                         index === 0 ? 'text-red-500' : index === 6 ? 'text-blue-500' : 'text-secondary/60'
                     }`}
                 >
@@ -96,18 +96,18 @@ const DateSection: React.FC = () => {
               return (
                   <div
                       key={index}
-                      className={`w-10 h-10 flex items-center justify-center text-sm rounded-lg transition-all duration-200 ${
+                      className={`w-8 h-8 md:w-10 md:h-10 flex items-center justify-center text-xs md:text-sm rounded transition-colors duration-200 ${
                           day === null
                               ? '' // 빈 칸
                               : isWeddingDay
-                                  ? 'bg-gradient-to-br from-rose-400 to-pink-500 text-white font-bold transform scale-110 shadow-lg' // 결혼식 날짜
+                                  ? 'bg-gradient-to-br from-rose-400 to-pink-500 text-white font-bold shadow-md' // 결혼식 날짜
                                   : isToday
                                       ? 'ring-blue-300 text-black font-bold ring-2 ring-blue-300' // 오늘 날짜
                                       : index % 7 === 0
-                                          ? 'text-red-400 hover:bg-red-50 cursor-pointer' // 일요일
+                                          ? 'text-red-400 hover:bg-red-50' // 일요일
                                           : index % 7 === 6
-                                              ? 'text-blue-400 hover:bg-blue-50 cursor-pointer' // 토요일
-                                              : 'text-secondary/80 hover:bg-secondary/10 cursor-pointer' // 평일
+                                              ? 'text-blue-400 hover:bg-blue-50' // 토요일
+                                              : 'text-secondary/80 hover:bg-secondary/10' // 평일
                       }`}
                   >
                     {day}
@@ -135,19 +135,19 @@ const DateSection: React.FC = () => {
             </div>
 
             {/* 캘린더 뷰 */}
-            <div className="flex flex-col items-center gap-6">
+            <div className="flex flex-col items-center gap-4">
               {isSameMonth ? (
                   // 같은 달인 경우 하나의 캘린더만 표시
-                  <div className="transform transition-transform duration-300 hover:scale-105">
+                  <div>
                     {renderCalendar(todayYear, todayMonth)}
                   </div>
               ) : (
                   // 다른 달인 경우 두 개의 캘린더 표시
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl">
-                    <div className="transform transition-transform duration-300 hover:scale-105">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 max-w-sm md:max-w-2xl">
+                    <div>
                       {renderCalendar(todayYear, todayMonth)}
                     </div>
-                    <div className="transform transition-transform duration-300 hover:scale-105">
+                    <div>
                       {renderCalendar(weddingYear, weddingMonth)}
                     </div>
                   </div>
