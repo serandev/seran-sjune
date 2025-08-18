@@ -1,97 +1,91 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 
+// 카운트다운 컴포넌트
 interface CountdownSectionProps {
-  weddingDate: string;
+  weddingDate: string; // String -> string (소문자로)
 }
 
 const CountdownSection: React.FC<CountdownSectionProps> = ({ weddingDate }) => {
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
     hours: 0,
+    minutes: 0,
+    seconds: 0,
   });
 
-  const sectionRef = useRef<HTMLDivElement>(null);
-
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('animate-fadeIn');
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
+    const weddingDateTime = new Date(weddingDate).getTime();
 
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
-    return () => {
-      if (sectionRef.current) {
-        observer.unobserve(sectionRef.current);
-      }
-    };
-  }, []);
-
-  useEffect(() => {
-    const targetDate = new Date(weddingDate).getTime();
-
-    const interval = setInterval(() => {
+    const updateCountdown = () => {
       const now = new Date().getTime();
-      const distance = targetDate - now;
+      const distance = weddingDateTime - now;
 
       if (distance < 0) {
-        clearInterval(interval);
         setTimeLeft({
           days: 0,
           hours: 0,
+          minutes: 0,
+          seconds: 0,
         });
         return;
       }
 
-      setTimeLeft({
-        days: Math.floor(distance / (1000 * 60 * 60 * 24)),
-        hours: Math.floor(
-          (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-        ),
-      });
-    }, 1000);
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      setTimeLeft({ days, hours, minutes, seconds });
+    };
+
+    updateCountdown();
+    const interval = setInterval(updateCountdown, 1000);
 
     return () => clearInterval(interval);
   }, [weddingDate]);
 
   return (
-    <section ref={sectionRef} className="py-5 bg-accent/5 opacity-0">
-      <div className="container mx-auto px-4">
-        <div className="max-w-3xl mx-auto text-center">
-          <h2 className="font-orbit text-3xl md:text-4xl text-primary mb-16">
-            결혼식까지 남은 시간
-          </h2>
+      <div>
+        <h3 className="font-orbit text-xl text-primary mb-8">결혼식까지 남은 시간</h3>
 
-          <div className="grid grid-cols-2 gap-8">
-            <div className="bg-background rounded-lg shadow-md p-6">
-              <div className="text-4xl md:text-5xl font-himelody text-accent mb-2">
-                {timeLeft.days}
-              </div>
-              <p className="font-orbit uppercase text-xl tracking-wider">
-                일
-              </p>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-md mx-auto">
+          <div className="bg-background rounded-lg shadow-md p-4 text-center">
+            <div className="text-2xl md:text-3xl font-bold text-accent mb-1">
+              {timeLeft.days}
             </div>
+            <p className="font-orbit text-sm text-secondary/70 uppercase tracking-wider">
+              일
+            </p>
+          </div>
 
-            <div className="bg-background rounded-lg shadow-md p-6">
-              <div className="text-4xl md:text-5xl font-himelody text-accent mb-2">
-                {timeLeft.hours}
-              </div>
-              <p className="font-orbit uppercase text-xl tracking-wider">
-                시간
-              </p>
+          <div className="bg-background rounded-lg shadow-md p-4 text-center">
+            <div className="text-2xl md:text-3xl font-bold text-accent mb-1">
+              {timeLeft.hours}
             </div>
+            <p className="font-orbit text-sm text-secondary/70 uppercase tracking-wider">
+              시간
+            </p>
+          </div>
+
+          <div className="bg-background rounded-lg shadow-md p-4 text-center">
+            <div className="text-2xl md:text-3xl font-bold text-accent mb-1">
+              {timeLeft.minutes}
+            </div>
+            <p className="font-orbit text-sm text-secondary/70 uppercase tracking-wider">
+              분
+            </p>
+          </div>
+
+          <div className="bg-background rounded-lg shadow-md p-4 text-center">
+            <div className="text-2xl md:text-3xl font-bold text-accent mb-1">
+              {timeLeft.seconds}
+            </div>
+            <p className="font-orbit text-sm text-secondary/70 uppercase tracking-wider">
+              초
+            </p>
           </div>
         </div>
       </div>
-    </section>
   );
 };
 

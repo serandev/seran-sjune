@@ -28,7 +28,7 @@ const LocationSection: React.FC = () => {
   }, []);
 
   return (
-    <section ref={sectionRef} className="py-20 bg-background opacity-0">
+    <section ref={sectionRef} className="pt-5 pb-20 bg-background opacity-0">
       <div className="container mx-auto px-4">
         <div className="max-w-5xl mx-auto">
           <h2 className="font-orbit text-3xl md:text-4xl text-primary mb-12 text-center">

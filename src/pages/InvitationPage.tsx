@@ -4,7 +4,6 @@ import DateSection from '../components/DateSection';
 import GallerySection from '../components/GallerySection';
 import LocationSection from '../components/LocationSection';
 import MessageSection from '../components/MessageSection';
-import CountdownSection from '../components/CountdownSection';
 import InvitationHeader from '../components/InvitationHeader';
 import NotificationSection from '../components/NotificationSection';
 
@@ -38,7 +37,6 @@ const InvitationPage: React.FC = () => {
         <CoupleSection />
         <NotificationSection />
         <DateSection />
-        <CountdownSection weddingDate="2025-09-20T12:00:00" />
         <LocationSection />
         <GallerySection />
         <MessageSection />
