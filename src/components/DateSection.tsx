@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import CountdownSection from "./CountdownSection.tsx";
 
-
 const DateSection: React.FC = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
 
@@ -29,7 +28,7 @@ const DateSection: React.FC = () => {
   }, []);
 
   const today = new Date();
-  const weddingDate = new Date('2025-09-20');
+  const weddingDate = new Date('2025-09-20 12:00:00');
 
   const todayMonth = today.getMonth();
   const todayYear = today.getFullYear();
@@ -101,7 +100,7 @@ const DateSection: React.FC = () => {
                           day === null
                               ? '' // 빈 칸
                               : isWeddingDay
-                                  ? 'bg-accent text-white font-bold transform scale-110 shadow-lg' // 결혼식 날짜
+                                  ? 'bg-gradient-to-br from-rose-400 to-pink-500 text-white font-bold transform scale-110 shadow-lg' // 결혼식 날짜
                                   : isToday
                                       ? 'ring-blue-300 text-black font-bold ring-2 ring-blue-300' // 오늘 날짜
                                       : index % 7 === 0
@@ -143,8 +142,8 @@ const DateSection: React.FC = () => {
                     {renderCalendar(todayYear, todayMonth)}
                   </div>
               ) : (
-                  // 다른 달인 경우 두 개의 캘린더 표시 - 항상 가로 배치
-                  <div className="grid grid-cols-2 gap-4 max-w-2xl">
+                  // 다른 달인 경우 두 개의 캘린더 표시
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl">
                     <div className="transform transition-transform duration-300 hover:scale-105">
                       {renderCalendar(todayYear, todayMonth)}
                     </div>
