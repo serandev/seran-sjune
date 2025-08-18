@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, {useEffect, useState} from "react";
 
-// 카운트다운 컴포넌트
 interface CountdownSectionProps {
-  weddingDate: string; // String -> string (소문자로)
+  targetDate: string;
 }
 
-const CountdownSection: React.FC<CountdownSectionProps> = ({ weddingDate }) => {
+const CountdownSection: React.FC<CountdownSectionProps> = ({ targetDate }) => {
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
     hours: 0,
@@ -14,11 +13,11 @@ const CountdownSection: React.FC<CountdownSectionProps> = ({ weddingDate }) => {
   });
 
   useEffect(() => {
-    const weddingDateTime = new Date(weddingDate).getTime();
+    const targetDateTime = new Date(targetDate).getTime();
 
     const updateCountdown = () => {
       const now = new Date().getTime();
-      const distance = weddingDateTime - now;
+      const distance = targetDateTime - now;
 
       if (distance < 0) {
         setTimeLeft({
@@ -42,13 +41,13 @@ const CountdownSection: React.FC<CountdownSectionProps> = ({ weddingDate }) => {
     const interval = setInterval(updateCountdown, 1000);
 
     return () => clearInterval(interval);
-  }, [weddingDate]);
+  }, [targetDate]);
 
   return (
       <div>
         <h3 className="font-orbit text-xl text-primary mb-8">결혼식까지 남은 시간</h3>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-md mx-auto">
+        <div className="grid grid-cols-4 gap-3 max-w-sm mx-auto">
           <div className="bg-background rounded-lg shadow-md p-4 text-center">
             <div className="text-2xl md:text-3xl font-bold text-accent mb-1">
               {timeLeft.days}
