@@ -38,11 +38,13 @@ const LocationSection: React.FC = () => {
             <div className="text-center">
               <div className="bg-secondary/5 pt-10 p-6 rounded-lg shadow-md inline-block">
                 <h3 className="font-orbit text-xl text-primary mb-4">
-                  Private Venue
+                  필경재 이호당
                 </h3>
                 <div className="flex items-center justify-center mb-4">
                   <MapPin className="text-accent mr-3"/>
-                  <p className="text-lg text-secondary font-orbit">서울 수서</p>
+                  <p className="text-lg text-secondary font-orbit">
+                    서울 강남구 광평로 205
+                  </p>
                 </div>
               </div>
 

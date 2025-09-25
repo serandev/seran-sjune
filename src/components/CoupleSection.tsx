@@ -54,7 +54,7 @@ const CoupleSection: React.FC = () => {
                   <br />
                   낮 12시
                   <br />
-                  서울, 수서
+                  서울 강남구 광평로 205, 필경재 이호당
                 </strong>
               </p>
             </div>

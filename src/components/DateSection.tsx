@@ -36,6 +36,7 @@ const DateSection: React.FC = () => {
   const weddingYear = weddingDate.getFullYear();
 
   const isSameMonth = todayYear === weddingYear && todayMonth === weddingMonth;
+  const isWeddingPassed = today > weddingDate; // 결혼식 날짜가 지났는지 확인
 
   // 달력 데이터 생성 함수
   const generateCalendarDays = (year: number, month: number) => {
@@ -85,7 +86,7 @@ const DateSection: React.FC = () => {
 
           <div className="grid grid-cols-7 gap-1">
             {calendarDays.map((day, index) => {
-              const isToday = isTodayMonth && day === today.getDate();
+              const isToday = isTodayMonth && day === today.getDate() && !isWeddingPassed; // 결혼식이 지나지 않았을 때만 오늘 표시
               const isWeddingDay = isWeddingMonth && day === 20;
 
               return (
@@ -97,7 +98,7 @@ const DateSection: React.FC = () => {
                               : isWeddingDay
                                   ? 'bg-gradient-to-br from-rose-400 to-pink-500 text-white font-bold shadow-md' // 결혼식 날짜
                                   : isToday
-                                      ? 'ring-blue-300 text-black font-bold ring-2 ring-blue-300' // 오늘 날짜
+                                      ? 'ring-blue-300 text-black font-bold ring-2 ring-blue-300' // 오늘 날짜 (결혼식 전에만)
                                       : index % 7 === 0
                                           ? 'text-red-400 hover:bg-red-50' // 일요일
                                           : index % 7 === 6
@@ -129,7 +130,7 @@ const DateSection: React.FC = () => {
             </div>
 
             <div className="flex flex-col items-center gap-4">
-              {isSameMonth ? (
+              {isSameMonth || isWeddingPassed ? (
                   <div>
                     {renderCalendar(todayYear, todayMonth)}
                   </div>

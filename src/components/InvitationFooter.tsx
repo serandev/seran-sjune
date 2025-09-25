@@ -12,7 +12,7 @@ const InvitationFooter: React.FC = () => {
             <Heart className="text-accent w-5 h-5" fill="currentColor" />
           </div>
 
-          <p className="text-secondary mb-4">2025년 9월 20일 • 서울 수서</p>
+          <p className="text-secondary mb-4">2025년 9월 20일 • 서울 강남구 필경재</p>
           <div className="text-sm text-secondary/70">
             <p>© 2025 김선준 & 염세란 결혼</p>
           </div>
